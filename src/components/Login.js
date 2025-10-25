@@ -1,10 +1,65 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidateData } from "../utils/validate";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const [isSingInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const email = useRef(null);
+  const password = useRef(null);
   const toggleSignInForm = () => {
     setIsSignInForm(!isSingInForm);
+  };
+  const handleButtonClick = () => {
+    const message = checkValidateData(
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(message);
+    if (message) return;
+    if (!isSingInForm) {
+      // Sign Up Logio
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    } else {
+      // Sign In Logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + "-" + errorMessage);
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
   };
 
   return (
@@ -16,7 +71,12 @@ const Login = () => {
           alt="logo"
         />
       </div>
-      <form className="w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        className="w-3/12 absolute p-12 bg-black my-36 mx-auto right-0 left-0 text-white rounded-lg"
+      >
         <h1 className="font-bold text-3xl py-4">
           {isSingInForm ? "Sign In" : "Sign Up"}
         </h1>
@@ -29,21 +89,27 @@ const Login = () => {
         )}
         <input
           type="text"
+          ref={email}
           placeholder="Email Address"
           className="p-4 my-4 w-full bg-gray-700"
         />
         <input
           type="password"
+          ref={password}
           placeholder="Password"
           className="p-4 my-4 w-full bg-gray-700"
         />
-        <button className="p-4 my-6 bg-red-700 w-full rounded-lg">
+        <p className="text-red-500 font-bold text-sm">{errorMessage}</p>
+        <button
+          className="p-4 my-6 bg-red-700 w-full rounded-lg"
+          onClick={handleButtonClick}
+        >
           {isSingInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
           {!isSingInForm
-            ? "New to Netfilx? Sign Up Now"
-            : "Already Registered?Enjoy it"}
+            ? "Already Registered?Enjoy it"
+            : "New to Netfilx? Sign Up Now"}
         </p>
       </form>
     </div>
