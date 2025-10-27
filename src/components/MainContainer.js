@@ -10,7 +10,10 @@ const MainContainer = () => {
   console.log(mainMovie);
   return (
     <div>
-      <VideoTitle />
+      <VideoTitle
+        title={mainMovie.original_title}
+        overview={mainMovie.overview}
+      />
       <VideoBackground />
     </div>
   );
