@@ -1,13 +1,27 @@
 import React, { useRef } from "react";
 import lang from "../utils/languageConstants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 //import genAI from "../utils/genai";
 import { GoogleGenAI } from "@google/genai";
-import { GEMINI_KEY } from "../utils/constants";
+import { API_OPTIONS, GEMINI_KEY } from "../utils/constants";
+import { addGptMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
+  const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
+
+  const searchMovieTMBD = async (movie) => {
+    const data = await fetch(
+      "https://api.themoviedb.org/3/search/movie?query=" +
+        movie +
+        "&include_adult=false&language=en-US&page=1",
+      API_OPTIONS
+    );
+    const json = await data.json();
+
+    return json.results;
+  };
 
   const hangleGptSearchClick = async () => {
     console.log(searchText.current.value);
@@ -24,7 +38,15 @@ const GptSearchBar = () => {
       model: "gemini-2.5-flash",
       contents: gptQuery,
     });
-    console.log(response.text);
+    const gptMovies = response.text.split(",").map((movie) => movie.trim());
+    console.log(gptMovies);
+
+    const promiseArray = gptMovies.map((movie) => searchMovieTMBD(movie));
+    const tmbdResults = await Promise.all(promiseArray);
+    console.log(tmbdResults);
+    dispatch(
+      addGptMovieResult({ movieNames: gptMovies, movieResults: tmbdResults })
+    );
   };
   return (
     <div className="pt-[10%] flex justify-center ">
