@@ -68,18 +68,35 @@ const Header = () => {
             </select>
           )}
           <button
-            className="py-2 px-4 mx-4 my-2 bg-purple-800 text-white rounded-lg"
+            className="py-2 px-4 mx-4 my-2 bg-purple-800 hover:bg-purple-950 cursor-pointer hover:scale-[1.02] text-white rounded-lg"
             onClick={hangleGptSearchClick}
           >
             {showGptSearch ? "Home" : "GPT Search"}
           </button>
-          <img
-            className="hidden md:block h-12 w-12"
-            alt="usericon"
-            src={user?.photoURL}
-            // src="https://occ-0-6247-2164.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABdpkabKqQAxyWzo6QW_ZnPz1IZLqlmNfK-t4L1VIeV1DY00JhLo_LMVFp936keDxj-V5UELAVJrU--iUUY2MaDxQSSO-0qw.png?r=e6e"
-          />
-          <button onClick={handleSignOut} className="font-bold text-white">
+          <div className="relative group hidden md:block">
+            <img
+              className="h-12 w-12 rounded-full border-2 border-gray-600 shadow-md 
+               object-cover cursor-pointer hover:scale-110 hover:border-red-500 
+               transition-transform duration-300"
+              alt="User Icon"
+              src={user?.photoURL}
+            />
+
+            {/* Tooltip on hover */}
+            <span
+              className="absolute left-1/2 -translate-x-1/2 -bottom-8 
+               text-sm text-white bg-black/80 
+               px-2 py-1 rounded-md opacity-0 
+               group-hover:opacity-100 group-hover:translate-y-1 
+               transition-all duration-300 pointer-events-none whitespace-nowrap"
+            >
+              User Icon
+            </span>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="py-2 px-4 mx-4 my-2 bg-red-700 hover:bg-red-900 cursor-pointer hover:scale-[1.02] text-white rounded-lg"
+          >
             Sign Out
           </button>
         </div>

@@ -10,11 +10,12 @@ import {
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { BG_URL, USER_AVATAR } from "../utils/constants";
-
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 const Login = () => {
   const dispatch = useDispatch();
   const [isSingInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -85,8 +86,12 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className="absolute">
-        <img className="h-screen object-cover" src={BG_URL} alt="logo" />
+      <div className="fixed -z-10 w-screen h-screen">
+        <img
+          className="h-screen w-screen object-cover"
+          src={BG_URL}
+          alt="logo"
+        />
       </div>
       <form
         onSubmit={(e) => {
@@ -111,20 +116,39 @@ const Login = () => {
           placeholder="Email Address"
           className="p-4 my-4 w-full bg-gray-700"
         />
-        <input
-          type="password"
-          ref={password}
-          placeholder="Password"
-          className="p-4 my-4 w-full bg-gray-700"
-        />
+        {/* 🔥 Added password input wrapper with visibility toggle */}
+        <div className="relative">
+          <input
+            ref={password}
+            type={showPassword ? "text" : "password"} // 🔥 Toggle visibility
+            placeholder="Password"
+            className="p-4 my-4 w-full bg-gray-700 rounded-md  pr-12"
+          />
+
+          {/* 🔥 Eye icon button */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-6 text-gray-300 hover:text-white mt-2"
+          >
+            {showPassword ? (
+              <EyeOffIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
         <p className="text-red-500 font-bold text-sm">{errorMessage}</p>
         <button
-          className="p-4 my-6 bg-red-700 w-full rounded-lg"
+          className="p-4 my-6 bg-red-700 w-full rounded-lg hover:bg-red-800 hover:scale-[1.02] "
           onClick={handleButtonClick}
         >
           {isSingInForm ? "Sign In" : "Sign Up"}
         </button>
-        <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
+        <p
+          className="py-4 cursor-pointer hover:text-red-600"
+          onClick={toggleSignInForm}
+        >
           {!isSingInForm
             ? "Already Registered?Enjoy it"
             : "New to Netfilx? Sign Up Now"}
