@@ -4,6 +4,15 @@ This project replicates the core user interface and features of Netflix, enhance
 
 The application allows users to sign up, log in, browse movie categories fetched from TMDb, and utilize a unique GPT-powered search to discover movies based on natural language queries.
 
+### Live Demo and Project Showcase
+
+| Feature | Link |
+| :--- | :--- |
+| **Live Application (Vercel)** | [**👉 Click to View Live App**](https://netflix-ppz9u2fdj-naveens-projects-632a7abc.vercel.app/) |
+| **Video Demonstration** | [**🎬 Watch Project Demo**](https://drive.google.com/file/d/10eh_31H3KkZyfKUgzYoEOUAyjiUXr40y/view?usp=sharing) |
+
+---
+
 ## In-Depth Features
 
 - **Robust User Authentication:**
@@ -52,6 +61,8 @@ The application allows users to sign up, log in, browse movie categories fetched
 - **Multi-language Support Framework:**
   - Incorporates a basic structure for internationalization (i18n), allowing UI text elements (like button labels, placeholders) to be displayed in different languages based on user preference stored in the Redux store.
 
+---
+
 ## 🛠️ Technology Stack
 
 - **Core:** React.js (v18+), JavaScript (ES6+)
@@ -64,6 +75,8 @@ The application allows users to sign up, log in, browse movie categories fetched
   - The Movie Database (TMDb) API (v3 - Movies & Search)
   - Google Gemini API (or OpenAI API)
 - **Development Tools:** Git, VS Code, Browser Developer Tools, Redux DevTools Extension
+
+---
 
 ## Getting Started
 
@@ -93,6 +106,8 @@ The application allows users to sign up, log in, browse movie categories fetched
     _(or `yarn dev`)_
 
     The application should then be accessible, usually at `http://localhost:5173`.
+    
+---
 
 ## Acknowledgements
 
